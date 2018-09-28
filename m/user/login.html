@@ -28,7 +28,11 @@
                 <input name="pass" type="password" placeholder="密码" class="mui-input-password">
                 <span class="mui-icon mui-icon-eye"></span>
             </div>
-            <a href="index.html" class="mui-btn mui-btn-primary btn_login">登录</a>
+            <!-- 此处将a标签的按钮换成button按钮，因为a会默认跳转 
+            同时将href跳转删除
+            -->
+            
+            <button class="mui-btn mui-btn-primary btn_login">登录</button>
             <div class="mui-input-row cz_text">
                 <a href="register.html">免费注册</a>
             </div>
@@ -42,5 +46,32 @@
     </footer>
 </div>
 <script src="../res/mui/js/mui.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script>
+    // 登录
+    $('.btn_login').on('click', function () {
+            // 发送请求至服务器 http://localhost:3000
+            $.ajax({
+                // 请求的地址操作
+                url: 'http:/localhost:3001/user/login',
+                // 传输方式
+                type: 'post',
+                // 获取后天的信息
+                data: {
+                    // 获取用户输入的信息操作
+                    username:$('input[name="name"]').val(),
+                    password:$('input[name="pass"]').val()
+                },
+                // success请求成功并返回的信息
+                // info是返回的内容
+                success: function (info) {
+                // 判断返回的数据成功进行跳转操作
+                    if(info.success) {
+                        location.href = './index.html'
+                    }
+                }
+            })
+        })
+</script>
 </body>
 </html>
