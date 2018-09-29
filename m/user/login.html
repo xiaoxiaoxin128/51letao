@@ -53,10 +53,14 @@
             // 发送请求至服务器 http://localhost:3000
             $.ajax({
                 // 请求的地址操作
-                url: 'http:/localhost:3001/user/login',
+                url: '/api/user/login',
                 // 传输方式
                 type: 'post',
                 // 获取后天的信息
+                // 解决跨域的请求问题
+                // xhrFields:{
+                //     withCredentials:true
+                // },
                 data: {
                     // 获取用户输入的信息操作
                     username:$('input[name="name"]').val(),

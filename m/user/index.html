@@ -59,17 +59,23 @@
     // 检测用户名是否登录
     // localhost：3001/后面操作时后端的接口文档
     $.ajax({
-        url:'api/user/queryUserMessage',
+        url:'/api/user/queryUserMessage',
         // url:'/api/user/queryUserMessage',
         type:'get',
+        // 使用 withCredentials : true/cors操作解决跨域的问题
+        // 跨域有两种一种的cors 一种是反向代理的操作
+        // xhrFields: {
+        // 让浏览器将coolie的数据传输给后端
+        //     withCredentials : true
+        //   },
         success:function(info){
             console.log(info);
             // 判断是否登录进行跳转成功是success
             // 返回的用户注册信息为空失败就是error跳转的注册页面
-            // if(info.error){
-            //     location.href = './login.html'
-            //     // login.html是一个登录页面
-            // }
+            if(info.error){
+                location.href = './login.html'
+                // login.html是一个登录页面
+            }
         }
     });
 </script>
