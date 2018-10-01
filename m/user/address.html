@@ -20,36 +20,20 @@
         <span class="title">收货地址管理</span>
     </header>
     <div class="cz_container">
-        <ul class="mui-table-view">
-            <li class="mui-table-view-cell">
-                <div class="mui-slider-right mui-disabled">
-                    <a class="mui-btn mui-btn-red">删除</a>
-                </div>
-                <a href="addressManage.html" class="mui-navigate-right mui-slider-handle">
-                    <div class="delivery">邮编：<span>100000</span>&nbsp;收货人：<span>黄晓明</span></div>
-                    <div class="address">北京市海淀区西三旗街道经验龙办公楼传智播客教育科技有限公司</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell">
-                <div class="mui-slider-right mui-disabled">
-                    <a class="mui-btn mui-btn-red">删除</a>
-                </div>
-                <a href="addressManage.html" class="mui-navigate-right mui-slider-handle">
-                    <div class="delivery">邮编：<span>100000</span>&nbsp;收货人：<span>黄晓明</span></div>
-                    <div class="address">北京市海淀区西三旗街道经验龙办公楼传智播客教育科技有限公司</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell">
-                <div class="mui-slider-right mui-disabled">
-                    <a class="mui-btn mui-btn-red">删除</a>
-                </div>
-                <a href="addressManage.html" class="mui-navigate-right mui-slider-handle">
-                    <div class="delivery">邮编：<span>100000</span>&nbsp;收货人：<span>黄晓明</span></div>
-                    <div class="address">北京市海淀区西三旗街道经验龙办公楼传智播客教育科技有限公司</div>
-                </a>
-            </li>
+        <!-- 此处添加一个id addresslist将获取的信息添加到页面中去 -->
+        <ul class="mui-table-view" id="addresslist">
+            <!-- 此处设置一个模板引擎的操作要将多余的li标签删除只在tpl下留一个 -->
+
+        
         </ul>
+        <!-- 此处添加一个一个登陆修改收货信息的按页面,一个登录的按钮 -->
+            <div class="wrap" style="padding:0 10px">
+                <a href="./addressAdd.html" class="mui-btn mui-btn-primary btn_login">新增收货地址</a>
+            </div>
+       
+
     </div>
+
     <footer class="cz_tabs">
         <a class="tab_home fa fa-home" href="../index.html"><span>首页</span></a>
         <a class="tab_cate fa fa-bars" href="../cate.html"><span>分类</span></a>
@@ -57,6 +41,43 @@
         <a class="tab_user fa fa-user" href="../user/index.html"><span>会员中心</span></a>
     </footer>
 </div>
+    <!-- 2.此处设置一个 tpl的id用于下面的元素获取 -->
+<script type="text/html" id="tpl">
+    <!-- 1.遍历模板引擎 -->
+        {{each list val}}
+        <li class="mui-table-view-cell">
+            <div class="mui-slider-right mui-disabled">
+                <a class="mui-btn mui-btn-red">删除</a>
+            </div>
+            <a href="addressManage.html" class="mui-navigate-right mui-slider-handle">
+                <div class="delivery">邮编：<span>{{val.postCode}}</span>&nbsp;收货人：<span>{{val.recipients}}</span></div>
+                <div class="address">{{val.address}} {{val.addressDetail}}</div>
+            </a>
+        </li>
+        {{/each}}
+</script>
 <script src="../res/mui/js/mui.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<!-- 调用模板引擎的操作插件 -->
+<script src="../js/template-web.js"></script>
+<script>
+    // 获取用户的列表地址发送请求就可以
+    $.ajax({
+        // - 查询用户存储的收货地址 （需要登录）
+        // /address/queryAddress
+
+        url:'/api/address/queryAddress',
+        success:function(info){
+            console.log(info);
+
+
+            // 1.调用模板引擎
+           var html = template('tpl',{list:info});
+            console.log(html)
+            // 2.调用addresslist  id添加到页面中去
+            $('#addresslist').html(html);
+        }
+    })
+</script>
 </body>
 </html>

@@ -25,7 +25,9 @@
                 <a class="mui-navigate-right" href="#account">
                     <img class="mui-media-object mui-pull-left head-img" id="head-img" src="../images/user.jpg">
                     <div class="mui-media-body">
-                        Hello MUI
+                        <!-- Hello MUI -->
+                        <!-- 用demo的方式修改次数的用户名信息 -->
+                       <span class="uname"></span>
                         <p class="mui-ellipsis">账号:hellomui</p>
                     </div>
                 </a>
@@ -43,7 +45,8 @@
             </li>
         </ul>
         <div class="p20">
-            <a href="login.html" class="mui-btn btn_outLogin">退出登录</a>
+            <!-- 此处因为a标签会进行默认的跳转加一个javascript:;阻止提交表单操作 -->
+            <a href="javascript:;" class="mui-btn btn_outLogin">退出登录</a>
         </div>
     </div>
     <footer class="cz_tabs">
@@ -56,7 +59,26 @@
 <script src="../res/mui/js/mui.min.js"></script>
 <script src="../js/jquery.min.js"></script>
 <script>
-    // 检测用户名是否登录
+
+
+    // 退出登录操作
+    $('.btn_outLogin').on('click',function(){
+        // 让服务器清除session,实现登录退出
+        $.ajax({
+            url:'/api/user/logout',
+            type:'get',
+            success:function(info){
+                console.log(info)
+                // 此处进行判断操作,如果info等于success为true表示成功
+                if(info.success){
+                    location.href = '/m';
+                }
+                // 此处的/m就是http://的主机端口的替代
+            }
+         });       
+    })
+
+    // 检测用户名是否登录(获取用户信息)
     // localhost：3001/后面操作时后端的接口文档
     $.ajax({
         url:'/api/user/queryUserMessage',
@@ -69,9 +91,16 @@
         //     withCredentials : true
         //   },
         success:function(info){
-            console.log(info);
+            // 输出打印info下的name名称
+            // console.log(info.username);
             // 判断是否登录进行跳转成功是success
             // 返回的用户注册信息为空失败就是error跳转的注册页面
+           
+            // 此处的操作是将返回的信息name返回到页面中
+            // 显示用户的信息
+            $('span.uname').text(info.username);
+           
+           
             if(info.error){
                 location.href = './login.html'
                 // login.html是一个登录页面
